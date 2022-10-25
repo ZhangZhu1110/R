@@ -1,3 +1,11 @@
+# We have a single cell gene expression profile with 113 samples and around 100 genes.
+# They are derived from 10 patients and 4 vascular sites.
+# Therefore, sach sample has 2 labels, patients and locations.
+# I aim to demonstrate the data in different angle of views.
+# The following codes exhibit the comparison of different visualization strategy.
+# The corresponding report can be browsed in https://github.com/ZhangZhu1110/Courses-Reports-in-NTU/blob/main/Data%20visualization.pdf
+
+
 library(ggplot2)
 library(pheatmap)
 setwd("C:/Users/zhang/Desktop/Data Visualization/Project/")
