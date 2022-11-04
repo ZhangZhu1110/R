@@ -7,20 +7,20 @@ library(hdf5r)
 setwd("C:/Users/zhang/Desktop/R")
 
 
-# data source: https://www.10xgenomics.com/resources/datasets/40-k-mixture-of-nsclc-dt-cs-from-7-donors-3-ht-v-3-1-3-1-high-6-1-0
+# Data source: https://www.10xgenomics.com/resources/datasets/40-k-mixture-of-nsclc-dt-cs-from-7-donors-3-ht-v-3-1-3-1-high-6-1-0
 
-# load the NSCLC dataset
+# Load the NSCLC dataset
 nsclc.sparse.m = Read10X_h5(filename = '40k_NSCLC_DTC_3p_HT_nextgem_Multiplex_count_raw_feature_bc_matrix.h5')
 cts = nsclc.sparse.m$`Gene Expression`
 
 # Initialize the Seurat object with the raw (non-normalized data)
-# reserve features expressed in at least 3 cells
-# reserve cells expressing at least 200 features
+# Reserve features expressed in at least 3 cells
+# Reserve cells expressing at least 200 features
 nsclc.seurat.obj = CreateSeuratObject(counts = cts, project = 'NSCLC', min.cells = 3, min.features = 200)
 
 # 1.QC
 
-# define mitochondrial gene and ribosome protein
+# Define mitochondrial gene and ribosome protein
 nsclc.seurat.obj[["percent.mt"]] <- PercentageFeatureSet(nsclc.seurat.obj, pattern = "^MT-")
 nsclc.seurat.obj[["percent.rb"]] <- PercentageFeatureSet(nsclc.seurat.obj, pattern = "^RP[SL]")
 remove(nsclc.sparse.m)
@@ -51,7 +51,7 @@ nsclc.seurat.obj = ScaleData(nsclc.seurat.obj, features = all.genes)
 # 6. Perform Linear dimension reduction
 nsclc.seurat.obj = RunPCA(nsclc.seurat.obj, features = VariableFeatures(object = nsclc.seurat.obj))
 
-# visualize PCA results
+# Visualize PCA results
 print(nsclc.seurat.obj[["pca"]], dims = 1:5, nfeatures = 5)
 DimPlot(nsclc.seurat.obj, reduction = "pca")
 DimHeatmap(nsclc.seurat.obj, dims = 1, cells = 500,balanced = TRUE)
@@ -74,6 +74,7 @@ DimPlot(nsclc.seurat.obj, reduction = "umap", label = T)
 
 nsclc.seurat.obj <- RunTSNE(nsclc.seurat.obj, dims = 1:10)
 DimPlot(nsclc.seurat.obj, reduction = "tsne", label = T)
+
 # 9.Feature plot
 FeaturePlot(nsclc.seurat.obj, features = c("IGHG2", "IGLV2-14", "HBA2", "IGKV4-1"))
 
